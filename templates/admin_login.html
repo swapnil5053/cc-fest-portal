@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block content %}
+<section class="section-surface auth-grid">
+  <div class="auth-panel">
+    <p class="section-label">Admin access</p>
+    <h2>Sign in to manage the event experience.</h2>
+    <p class="section-copy">
+      Authenticate to access event creation, registration analytics, and
+      capacity controls.
+    </p>
+
+    {% if error %}
+    <div
+      class="mt-6 rounded-3xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100"
+    >
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="/admin/login" class="mt-8 grid gap-5">
+      <div class="auth-field">
+        <label>Username</label>
+        <input name="username" required class="input-field" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input name="password" required type="password" class="input-field" />
+      </div>
+      <button type="submit" class="btn-action">Sign in</button>
+    </form>
+  </div>
+  <div class="support-card">
+    <h3>Admin controls</h3>
+    <p>
+      After signing in, manage events and review live demand without the noise
+      of a generic dashboard.
+    </p>
+  </div>
+</section>
+{% endblock %}

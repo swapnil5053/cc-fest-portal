@@ -1,61 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CC Fest Monolith</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="bg-slate-100">
-  <!-- Top Navbar -->
-  <nav class="bg-white shadow-sm border-b">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="h-10 w-10 rounded-xl bg-black text-white grid place-items-center font-bold">CC</div>
-        <div>
-          <p class="font-semibold text-slate-900 leading-none">Fest Monolith</p>
-          <p class="text-xs text-slate-500">FastAPI • SQLite • Locust</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title if title else "CC Fest Portal" }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body class="page-shell">
+    <div class="site-header">
+      <div class="container mx-auto max-w-7xl px-4 md:px-8">
+          <a href="/events" class="site-logo" aria-label="College Fest Portal">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-copy">
+              <span>College Fest</span>
+              <span>Portal</span>
+            </span>
+          </a>
+          <nav class="site-nav">
+            <a href="/events">Events</a>
+            <a href="/my-events">Tickets</a>
+            <a href="/checkout">Checkout</a>
+          </nav>
+          <div class="site-actions">
+            {% if request.session.user %}
+            <span class="profile-pill">{{ request.session.user[0]|upper }}</span>
+            <a href="/logout" class="btn-secondary">Sign out</a>
+            {% else %}
+            <a href="/login" class="btn-action">Login</a>
+            <a href="/register" class="btn-secondary">Register</a>
+            {% endif %}
+            <a href="/admin/login" class="btn-ghost">Admin</a>
+          </div>
         </div>
       </div>
-
-      <div class="flex items-center gap-2 flex-wrap">
-        {% if user %}
-          <span class="text-xs px-3 py-1 rounded-full bg-slate-100 border text-slate-700">
-            Logged in as <b>{{ user }}</b>
-          </span>
-          <a href="/events?user={{ user }}" class="px-4 py-2 rounded-lg bg-black text-white text-sm font-medium hover:opacity-90">
-            Events
-          </a>
-          <a href="/my-events?user={{ user }}" class="px-4 py-2 rounded-lg bg-white border text-sm font-medium hover:bg-slate-50">
-            My Events
-          </a>
-          <a href="/checkout" class="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700">
-            Checkout
-          </a>
-          <a href="/login" class="px-4 py-2 rounded-lg bg-white border text-sm font-medium hover:bg-slate-50">
-            Logout
-          </a>
-        {% else %}
-          <a href="/login" class="px-4 py-2 rounded-lg bg-black text-white text-sm font-medium hover:opacity-90">
-            Login
-          </a>
-          <a href="/register" class="px-4 py-2 rounded-lg bg-white border text-sm font-medium hover:bg-slate-50">
-            Create Account
-          </a>
-        {% endif %}
-      </div>
     </div>
-  </nav>
 
-  <!-- Main -->
-  <main class="max-w-6xl mx-auto px-4 py-8">
-    {% block content %}{% endblock %}
-  </main>
+    <div class="mx-auto max-w-7xl px-4 py-8 md:px-8">
+      <section>
+        {% if success %}
+        <div
+          class="toast-fade mb-6 rounded-3xl border border-emerald-500/15 bg-slate-900/80 p-4 text-sm text-emerald-200"
+        >
+          {{ success }}
+        </div>
+        {% endif %} {% if error %}
+        <div
+          class="toast-fade mb-6 rounded-3xl border border-rose-500/15 bg-slate-900/80 p-4 text-sm text-rose-200"
+        >
+          {{ error }}
+        </div>
+        {% endif %}
+      </section>
 
-  <!-- Footer -->
-  <footer class="max-w-6xl mx-auto px-4 pb-10 text-xs text-slate-500">
-    CC Week X • Monolithic Applications Lab
-  </footer>
-</body>
+      <main>{% block content %}{% endblock %}</main>
+
+      <footer
+        class="mt-20 border-t border-slate-800/60 pt-8 text-sm text-slate-500"
+      >
+        <div class="flex flex-col gap-3 md:flex-row md:justify-between">
+          <span>FastAPI • SQLite • QR Ticketing</span>
+          <span>Designed for a premium event experience.</span>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>

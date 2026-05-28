@@ -1,6 +1,9 @@
 
 fastapi
-uvicorn
+uvicorn[standard]
 jinja2
 python-multipart
+passlib[bcrypt]
+python-dotenv
+qrcode[pil]
 locust

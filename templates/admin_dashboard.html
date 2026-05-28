@@ -1,0 +1,147 @@
+{% extends "base.html" %} {% block content %}
+<section class="hero-section">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Admin control center</p>
+      <h1 class="hero-title">
+        Orchestrate events, demand, and capacity from one clean interface.
+      </h1>
+      <p>
+        Maintain clarity across registrations, revenue, and attendance with a
+        dashboard designed for calm, fast decisions.
+      </p>
+    </div>
+    <div class="hero-panel">
+      <div class="hero-stat-grid">
+        <div class="stat-card">
+          <strong>₹ {{ overview.revenue }}</strong>
+          <span>Revenue</span>
+        </div>
+        <div class="stat-card">
+          <strong>{{ overview.total_registrations }}</strong>
+          <span>Registrations</span>
+        </div>
+        <div class="stat-card">
+          <strong>{{ overview.active_users }}</strong>
+          <span>Active attendees</span>
+        </div>
+        <div class="stat-card">
+          <strong>{{ overview.events|length }}</strong>
+          <span>Live events</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-surface mt-10">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Trending sessions</p>
+      <h2 class="section-title">Events with the strongest momentum.</h2>
+    </div>
+    <p class="section-copy">
+      Observe demand, registration velocity, and capacity in a concise
+      operational view.
+    </p>
+  </div>
+  <div class="admin-panel mt-8">
+    {% for event in overview.popular_events %}
+    <div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="section-label">{{ event.name }}</p>
+          <h3>{{ event.name }}</h3>
+        </div>
+        <span class="detail-chip">{{ event.registrations }} regs</span>
+      </div>
+      <div
+        class="mt-4 flex items-center justify-between gap-4 text-sm text-slate-400"
+      >
+        <span>Cap {{ event.capacity }}</span>
+        <span>₹ {{ event.fee }}</span>
+      </div>
+      <div class="event-progress mt-4">
+        <div
+          style="width: {{ ((event.registrations / event.capacity) * 100)|round(0) }}%"
+        ></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-surface mt-10">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Event controls</p>
+      <h2 class="section-title">Publish and manage experiences.</h2>
+    </div>
+    <p class="section-copy">
+      Keep the event roster fresh, balanced, and aligned with your expected
+      attendance.
+    </p>
+  </div>
+  <div class="admin-panel mt-8">
+    <div>
+      <h3>Add a new event</h3>
+      <form method="post" action="/admin/events/add" class="mt-6 grid gap-4">
+        <div class="auth-field">
+          <label>Event title</label>
+          <input name="name" required class="input-field" />
+        </div>
+        <div class="auth-field">
+          <label>Description</label>
+          <textarea
+            name="description"
+            required
+            rows="4"
+            class="input-field"
+          ></textarea>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="auth-field">
+            <label>Fee</label>
+            <input
+              name="fee"
+              required
+              type="number"
+              min="0"
+              class="input-field"
+            />
+          </div>
+          <div class="auth-field">
+            <label>Capacity</label>
+            <input
+              name="capacity"
+              required
+              type="number"
+              min="1"
+              class="input-field"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn-action">Add event</button>
+      </form>
+    </div>
+    <div>
+      <h3>Current roster</h3>
+      <div class="mt-6 space-y-4">
+        {% for event in overview.events %}
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-sm text-slate-300">{{ event.name }}</p>
+            <p class="text-xs text-slate-500">
+              Cap {{ event.capacity }} · ₹ {{ event.fee }}
+            </p>
+          </div>
+          <form method="post" action="/admin/events/{{ event.id }}/delete">
+            <button type="submit" class="btn-secondary">Delete</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

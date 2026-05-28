@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+<section class="section-surface grid gap-8 lg:grid-cols-[1.3fr_0.85fr]">
+  <div>
+    <p class="section-label">Your event ticket</p>
+    <h2 class="section-title">{{ ticket.name }}</h2>
+    <p class="section-copy">
+      Present this QR code at the entrance for seamless check-in.
+    </p>
+
+    <div class="ticket-panel mt-10">
+      <div class="ticket-meta">
+        <span class="section-label">Ticket code</span>
+        <strong>{{ ticket.ticket_code }}</strong>
+        <p class="event-description">{{ ticket.description }}</p>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="detail-chip">₹ {{ ticket.fee }}</span>
+          <span class="detail-chip">Booked on {{ ticket.registered_at }}</span>
+        </div>
+      </div>
+      <div class="text-right">
+        <a href="/my-events" class="btn-action">Back to my events</a>
+        <a href="/events" class="btn-secondary mt-3 inline-flex">Browse more</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticket-qr-panel">
+    <img src="{{ qr_image }}" alt="Ticket QR code" class="max-w-full" />
+  </div>
+</section>
+{% endblock %}
